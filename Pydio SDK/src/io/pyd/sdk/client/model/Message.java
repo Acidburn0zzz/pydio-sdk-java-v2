@@ -11,12 +11,18 @@ import org.w3c.dom.NodeList;
 public class Message{
 
 	
-	
+	/**
+	 * Message result SUCCESS
+	 */
 	public final static int SUCCESS = 1;
+	
+	/**
+	 * Message result ERROR
+	 */
 	public final static int ERROR 	= 2;
 		
 	
-	private static final long serialVersionUID = 1L;
+
 	
 	
 	private String message;
@@ -40,6 +46,11 @@ public class Message{
 		this.type = type;
 	}
 
+	/**
+	 * create a message from the given XML Document and fire associated event
+	 * @param doc An instance of XML Document
+	 * @return An instance of a Message
+	 */
 	public static Message create(Document doc){
 		
 		org.w3c.dom.Node xml_message = doc.getElementsByTagName(Pydio.XML_MESSAGE).item(0);

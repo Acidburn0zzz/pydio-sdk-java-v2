@@ -1,7 +1,9 @@
 package io.pyd.sdk.client.model;
 
 public interface PydioEvent {
-
-	public String type();
-		
+	
+	/**
+	 * @return the String name of the event type
+	 */
+	public String type();		
 }

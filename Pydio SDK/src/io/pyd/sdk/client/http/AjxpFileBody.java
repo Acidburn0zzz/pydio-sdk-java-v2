@@ -49,6 +49,7 @@ public class AjxpFileBody extends FileBody {
 			lastChunkSize = (int) getFile().length() - (this.chunkSize*(totalChunks-1));
 		}
 	}
+	
 	public int getCurrentIndex(){
 		return this.chunkIndex;
 	}
@@ -67,6 +68,7 @@ public class AjxpFileBody extends FileBody {
 	public String getRootFilename(){
 		return customFileName;
 	}
+	
 	
 	@Override
 	public String getFilename(){

@@ -7,14 +7,12 @@ import io.pyd.sdk.client.http.CountingMultipartRequestEntity;
 import io.pyd.sdk.client.http.HttpResponseParser;
 import io.pyd.sdk.client.http.Requester;
 import io.pyd.sdk.client.http.XMLDocEntity;
-import io.pyd.sdk.client.model.Message;
 import io.pyd.sdk.client.model.ServerNode;
 import io.pyd.sdk.client.utils.Pydio;
 import io.pyd.sdk.client.utils.StateHolder;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +30,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
- * 
+ * This class handle a session with a pydio server
  * @author pydio
  *
  */

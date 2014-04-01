@@ -27,8 +27,7 @@ public class VirtualNode implements Node{
 	}
 
 	public void initFromXml(org.w3c.dom.Node xml) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 
 	public void initFromJson(JSONObject json) {

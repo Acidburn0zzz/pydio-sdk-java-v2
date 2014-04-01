@@ -1,6 +1,5 @@
 package io.pyd.sdk.client.http;
 
-import io.pyd.sdk.client.model.Message;
 import io.pyd.sdk.client.utils.ServerResolver;
 import io.pyd.sdk.client.utils.StateHolder;
 
@@ -28,8 +27,13 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EncodingUtils;
 
 
+/**
+ * 
+ * @author pydio
+ *
+ */
 @SuppressWarnings("deprecation")
-public class Requester {	
+public class Requester {
 		
 	private AjxpFileBody fileBody;
 	private File file;
@@ -39,10 +43,16 @@ public class Requester {
 	private CountingMultipartRequestEntity.ProgressListener progressListener;	
 	String authStep;
 	
-	UsernamePasswordCredentials credentials = null;		
+	UsernamePasswordCredentials credentials = null;
 	//MAX_UPLOAD to be checked
 	
-	public HttpResponse issueRequest(URI uri, Map<String, String> postParameters){	
+	/**
+	 * This method perform an Http POST request. If postparameters and file are null then a Http GET request is perform.
+	 * @param uri 
+	 * @param postParameters post parameters of the request
+	 * @return returns an HTTPResponse.
+	 */
+	public HttpResponse issueRequest(URI uri, Map<String, String> postParameters){
 		
 		httpClient = new AjxpHttpClient(trustSSL);		
 		if(credentials != null){
@@ -54,7 +64,6 @@ public class Requester {
      	}
 		
 		try{
-			//HttpResponse response = null;
 			HttpRequestBase request;
 	
 			if(postParameters != null || file != null){
@@ -135,7 +144,10 @@ public class Requester {
 	
 	
 	
-	
+	/**
+	 * This method read the response data and consume it.
+	 * @param response
+	 */
 	private void discardResponse(HttpResponse response) {
 		try {
 			BufferedReader in = null;
@@ -154,28 +166,45 @@ public class Requester {
 			e.printStackTrace();
 		}
 	}
-			
+	/**
+	 * This method is used to pass a file to upload and  must be called before issueRequest(). 
+	 * @param file Object File to be uploaded
+	 */
 	public void setFile(File file){
 		this.file = file;
 	}
 	
+	
+	/**
+	 * Call this method to trust or not SSL self-signed certificates.
+	 * @param trust
+	 */
 	public void setTrustSSL(boolean trust){
 		trustSSL = trust;
 	}
 
-	public void setUploadProgressListener(CountingMultipartRequestEntity.ProgressListener uploadList){
-		this.progressListener = uploadList;
-	}
-		
+	
+	/**
+	 * Set username and password for Http basic authentication
+	 * @param user username string
+	 * @param password password string
+	 */
 	public void setCredentials(String user, String password){
 		this.credentials = new UsernamePasswordCredentials(user, password);
 	}
 	
-	
+	/**
+	 * Set a listener to follow upload progress.
+	 * @param listener
+	 */
 	public void setProgressListener(CountingMultipartRequestEntity.ProgressListener listener){
 		this.progressListener = listener;
 	}
 	
+	/**
+	 * This method is used to set the final name of the file to be uploaded and must be called before issueRequest();
+	 * @param fname
+	 */
 	public void setFilename(String fname){
 		fileName = fname;
 	}

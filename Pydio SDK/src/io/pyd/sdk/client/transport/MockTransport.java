@@ -11,6 +11,11 @@ import org.apache.http.HttpResponse;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 
+/**
+ * Fake Transport class to perform tests
+ * @author pydio
+ *
+ */
 public class MockTransport implements Transport{
 
 	public HttpResponse getResponse(String action, Map<String, String> params) {

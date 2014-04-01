@@ -1,6 +1,12 @@
 package io.pyd.sdk.client.utils;
 
-public class Pydio {	
+
+/**
+ * Class that defines the Pydio Protocol Constant
+ * @author pydio
+ *
+ */
+public class Pydio {
 	
 	public final static String PARAM_GET_ACTION					= "get_action";
 	public final static String PARAM_NODE 						= "node";
@@ -36,6 +42,10 @@ public class Pydio {
 	public final static String PARAM_CHUNK_COUNT 				= "chunk_count";	
 	public final static String PARAM_XHR_UPLOADER				= "xhr_uploader";
 	
+	
+	
+	
+	
 
 	public final static String ACTION_LIST 						= "ls";
 	public final static String ACTION_UPLOAD 					= "upload";
@@ -55,13 +65,12 @@ public class Pydio {
 	public final static String ACTION_CHMOD 					= "chmod";
 	public final static String ACTION_PREPARE_CHUNK_DL 			= "prepare_chunk_dl";
 	public final static String ACTION_DOWNLOAD_CHUNK 			= "download_chunk";
-	public final static String ACTION_PURGE 					= "purge";		
-	
-	
-	
+	public final static String ACTION_PURGE 					= "purge";
 	public final static String ACTION_LIST_REPOSITORIES			= "get_xml_registry&xPath=user/repositories";
 	public final static String ACTION_LIST_PLUGINS				= "get_xml_registry&xPath=plugins";
 		
+	
+	
 	public final static String AUTH_GET_TOKEN					= "get_boot_conf";
 	public final static String AUTH_GET_SEED					= "get_seed";	
 	

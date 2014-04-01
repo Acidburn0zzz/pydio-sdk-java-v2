@@ -7,6 +7,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+
+/**
+ * 
+ * @author pydio
+ *
+ */
 public class DefaultEventBus implements EventBus{
 	
 	private Map < String, ArrayList<Subscriber> > map = new HashMap< String, ArrayList<Subscriber> >();

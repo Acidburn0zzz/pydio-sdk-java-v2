@@ -17,6 +17,10 @@ public class TreeUpdateEvent implements PydioEvent{
 		return Pydio.NODE_DIFF_UPDATE;
 	}
 	
+	/**
+	 * 
+	 * @return An arrayList of remote Node that have been updated
+	 */
 	public ArrayList<Node> getNode(){
 		return nodes;
 	}

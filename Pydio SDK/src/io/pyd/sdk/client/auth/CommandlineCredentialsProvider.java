@@ -5,6 +5,11 @@ import java.util.Scanner;
 
 import org.apache.http.auth.UsernamePasswordCredentials;
 
+/**
+ * A credentials provider that prompt user to get login and password 
+ * @author pydio
+ *
+ */
 public class CommandlineCredentialsProvider implements CredentialsProvider {
 
 	public UsernamePasswordCredentials requestForLoginPassword() {

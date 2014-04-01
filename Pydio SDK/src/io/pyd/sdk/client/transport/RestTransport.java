@@ -15,7 +15,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 
-
+/**
+ * Class that generates rest requests
+ * @author pydio
+ *
+ */
 public class RestTransport implements Transport{
 	
 	public String server_url = "http://pydio/test/";

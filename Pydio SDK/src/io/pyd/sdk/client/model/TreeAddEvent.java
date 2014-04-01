@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 import io.pyd.sdk.client.utils.Pydio;
 
+
+/**
+ * Event class that describe events that are fired when a remote node has been added
+ * @author pydio
+ *
+ */
 public class TreeAddEvent implements PydioEvent{	
 
 	
@@ -17,6 +23,9 @@ public class TreeAddEvent implements PydioEvent{
 		return Pydio.NODE_DIFF_ADD;
 	}
 	
+	/**
+	 * @return An arrayList of remote Node that have been added
+	 */
 	public ArrayList<Node> getNode(){
 		return nodes;
 	}

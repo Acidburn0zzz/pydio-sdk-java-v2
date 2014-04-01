@@ -7,9 +7,12 @@ import io.pyd.sdk.client.model.FileNode;
 import io.pyd.sdk.client.model.Message;
 import io.pyd.sdk.client.model.Node;
 import io.pyd.sdk.client.model.NodeFactory;
+import io.pyd.sdk.client.model.RepositoryNode;
+import io.pyd.sdk.client.model.ServerNode;
 import io.pyd.sdk.client.transport.Transport;
 import io.pyd.sdk.client.transport.TransportFactory;
 import io.pyd.sdk.client.utils.Pydio;
+import io.pyd.sdk.client.utils.StateHolder;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,12 +41,12 @@ public class PydioClient {
 
 	
 	/**
-	 * 
-	 * @param mode
+	 * Create a pydio action by specifying the transport mode and a CredentialsProvider instance
+	 * @param transportMode Transport constant
 	 * @param p
 	 */
-	public PydioClient(int mode, CredentialsProvider p){
-		transport = TransportFactory.getInstance(mode, p);
+	public PydioClient(int transportMode, CredentialsProvider p){
+		transport = TransportFactory.getInstance(transportMode, p);
 	}
 	
 	
@@ -68,14 +71,26 @@ public class PydioClient {
 		}
 	}
 	
-	
+	public ArrayList<RepositoryNode> listRepository(){		
+		String action = Pydio.ACTION_LIST_REPOSITORIES;
+		Document doc = transport.getXmlContent(action , null);
+		NodeList entries;
+		entries = doc.getElementsByTagName("repo");
+		
+		ArrayList<RepositoryNode> nodes = new ArrayList<RepositoryNode>();		
+		for(int i = 0; i < entries.getLength(); i++){
+			org.w3c.dom.Node xmlNode = entries.item(i);			
+			nodes.add((RepositoryNode)NodeFactory.createNode(xmlNode));
+		}
+		return nodes;
+	}
 	
 	/**
-	 * 
-	 * @param node
-	 * @param lsRecurseOptions
-	 * @param lsOrderOptions
-	 * @return
+	 * List all the children of a Node
+	 * @param node the Node object to list children
+	 * @param lsRecurseOptions recursion options
+	 * @param lsOrderOptions recursion order
+	 * @return An ArrayList of Node
 	 */
 	ArrayList<Node> listChildren(Node node, Map<String, String> lsRecurseOptions, Map <String, String> lsOrderOptions){
 		
@@ -113,14 +128,15 @@ public class PydioClient {
 	}
 	
 		
-	/** 
-	 * @param target
-	 * @param source
-	 * @param ProgressHandler
-	 * @param autoRename
-	 * @param encodedFilename
-	 * @param append
-	 * @return
+
+	/**
+	 * Upload a file on the pydio server
+	 * @param node the directory to upload the file in
+	 * @param source the file to be uploaded
+	 * @param progressHandler Listener to handle upload progress
+	 * @param autoRename if set to true the file will be automatically rename if exists on the remote server
+	 * @param name the name on the remote server
+	 * @return a SUCCESS or ERROR Message
 	 */
 	Message write(Node node, File source, CountingMultipartRequestEntity.ProgressListener progressHandler , boolean autoRename, String name){
 		
@@ -157,48 +173,19 @@ public class PydioClient {
 		}
 		return null;
 	}
-	
 
-	/**
-	 * 
-	 * @param node
-	 * @param data
-	 * @param name
-	 * @return
-	 */
-	/*Message write(Node node, byte[] data, String name){
+	
 		
-		String action = Pydio.ACTION_PUT_CONTENT;
-		Map<String, String> params = new HashMap<String , String>();
-		
-		params.put(Pydio.PARAM_NODE, node.path());
-		params.put(Pydio.PARAM_CONTENT, );
-		params.put(Pydio.PARAM_ENCODE, "base64");
-		try {
-			params.put(Pydio.PARAM_APPENDTO_URLENCODED_PART, java.net.URLEncoder.encode(name, "UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-
-	
-		transport.putContent(action, params, data, name, null);
-
-		return null;
-	}*/
-	
-	
 	/**
-	 * 
-	 * @param nodes
-	 * @param outputStream
-	 * @param ProgressHandler
-	 * @throws IOException 
-	 * @throws IllegalStateException 
+	 * Download content from the remote server.
+	 * @param nodes remote nodes to read content
+	 * @param outputStream Outputstream on the local target file
+	 * @param progressHandler 
 	 */
 	void read(Node[] nodes, OutputStream outputStream, ProgressHandler progressHandler){
 		String action = Pydio.ACTION_DOWNLOAD;
 		Map<String, String> params = new HashMap<String , String>();
-		fillParams(params, nodes);		
+		fillParams(params, nodes);
 		
 		InputStream stream = null;
 		try {
@@ -207,7 +194,7 @@ public class PydioClient {
 			e1.printStackTrace();
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		}		
+		}
 		
 		// if(stream == null) // TODO
 		int read = 0;
@@ -232,9 +219,11 @@ public class PydioClient {
 	}
 		
 	/** 
-	 * @param nodes
-	 * @param target
-	 * @param ProgressHandler
+	 * 
+	 * Downlaod content ffrom the server
+	 * @param nodes Remotes nodes to read content from
+	 * @param target local file to put read content in
+	 * @param ProgressHandler 
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 * @throws IllegalStateException 
@@ -244,7 +233,7 @@ public class PydioClient {
 	}
 
 	/**
-	 * 
+	 * Remove node on the server
 	 * @param nodes
 	 * @return
 	 */
@@ -309,6 +298,7 @@ public class PydioClient {
 	}
 		
 	/**
+	 * 
 	 * @param node
 	 * @param dirname
 	 * @return

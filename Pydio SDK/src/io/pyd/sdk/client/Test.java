@@ -3,7 +3,6 @@ package io.pyd.sdk.client;
 import io.pyd.sdk.client.auth.CommandlineCredentialsProvider;
 import io.pyd.sdk.client.http.CountingMultipartRequestEntity;
 import io.pyd.sdk.client.model.FileNode;
-import io.pyd.sdk.client.model.Message;
 import io.pyd.sdk.client.model.Node;
 import io.pyd.sdk.client.model.NodeFactory;
 import io.pyd.sdk.client.model.RepositoryNode;

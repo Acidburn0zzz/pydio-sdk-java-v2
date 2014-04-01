@@ -30,7 +30,11 @@ import org.w3c.dom.Document;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-
+/**
+ * XML document Wrapper
+ * @author pydio
+ *
+ */
 public class XMLDocEntity extends BasicHttpEntity {
 	
 	private Document doc;
@@ -73,6 +77,11 @@ public class XMLDocEntity extends BasicHttpEntity {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return
+	 * @throws SAXException
+	 */
 	public Document getDoc() throws SAXException {
 		if(this.currentE != null) {
 			throw this.currentE;
@@ -80,6 +89,11 @@ public class XMLDocEntity extends BasicHttpEntity {
 		return doc;
 	}
 
+	
+	/**
+	 * 
+	 * @param doc
+	 */
 	public void setDoc(Document doc) {
 		this.doc = doc;
 	}
@@ -93,7 +107,9 @@ public class XMLDocEntity extends BasicHttpEntity {
 	public boolean isStreaming(){
 		return false;
 	}
-	
+	/**
+	 * 
+	 */
 	public void toLogger(){
 		if(true){
 			return;

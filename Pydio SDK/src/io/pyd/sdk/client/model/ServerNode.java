@@ -3,7 +3,11 @@ package io.pyd.sdk.client.model;
 import java.util.Map;
 import java.util.Properties;
 import org.json.JSONObject;
-
+/**
+ * Class that wrap a server properties
+ * @author pydio
+ *
+ */
 public class ServerNode implements Node{
 		
 	private boolean legacy = false;
@@ -24,6 +28,10 @@ public class ServerNode implements Node{
 		
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean isLegacy(){
 		return legacy;
 	}
