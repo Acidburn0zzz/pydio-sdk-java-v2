@@ -8,11 +8,9 @@ import io.pyd.sdk.client.model.Message;
 import io.pyd.sdk.client.model.Node;
 import io.pyd.sdk.client.model.NodeFactory;
 import io.pyd.sdk.client.model.RepositoryNode;
-import io.pyd.sdk.client.model.ServerNode;
 import io.pyd.sdk.client.transport.Transport;
 import io.pyd.sdk.client.transport.TransportFactory;
 import io.pyd.sdk.client.utils.Pydio;
-import io.pyd.sdk.client.utils.StateHolder;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -73,7 +71,7 @@ public class PydioClient {
 	
 	public ArrayList<RepositoryNode> listRepository(){		
 		String action = Pydio.ACTION_LIST_REPOSITORIES;
-		Document doc = transport.getXmlContent(action , null);
+		Document doc = transport.getXmlContent(action , new HashMap<String, String>());
 		NodeList entries;
 		entries = doc.getElementsByTagName("repo");
 		
