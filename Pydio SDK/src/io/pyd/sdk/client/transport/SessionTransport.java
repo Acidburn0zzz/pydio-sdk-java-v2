@@ -14,6 +14,7 @@ import io.pyd.sdk.client.utils.StateHolder;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -122,6 +123,9 @@ public class SessionTransport implements Transport{
 			secure_token = jObject.getString("SECURE_TOKEN");
 		} catch (JSONException e) {
 			//throw Message.create(1, 1, "FAILED TO REFRESH TOKEN");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

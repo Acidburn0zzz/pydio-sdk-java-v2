@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.text.ParseException;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
@@ -81,6 +82,9 @@ public class RestTransport implements Transport{
 			try {
 				return new JSONObject(HttpResponseParser.getString(response));
 			} catch (JSONException e) {
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			return null;
 	}
