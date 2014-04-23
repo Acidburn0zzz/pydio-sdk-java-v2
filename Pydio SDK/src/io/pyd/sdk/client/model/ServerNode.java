@@ -1,7 +1,9 @@
 package io.pyd.sdk.client.model;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
 import org.json.JSONObject;
 /**
  * Class that wrap a server properties
@@ -12,11 +14,11 @@ public class ServerNode implements Node{
 		
 	private boolean legacy = false;
 	private boolean SSLselfSigned = false;
-	private long uploadLimit = 2097152;
 	private String protocol;
 	private String host;
 	private String path;
 	private Map<String, String> remoteCapacities;
+	private Map<String, String> localCapacities;
 
 	public void initFromProperties(Properties spec) {		
 	}
@@ -24,8 +26,7 @@ public class ServerNode implements Node{
 	public void initFromXml(org.w3c.dom.Node xml) {
 	}
 
-	public void initFromJson(JSONObject json) {
-		
+	public void initFromJson(JSONObject json) {		
 	}
 	
 	/**
@@ -38,10 +39,6 @@ public class ServerNode implements Node{
 	
 	public boolean isSSLselfSigned(){
 		return SSLselfSigned;
-	}
-	
-	public long getUploadLimit(){
-		return uploadLimit;
 	}
 	
 	public String getHost(){
@@ -79,10 +76,6 @@ public class ServerNode implements Node{
 		SSLselfSigned = ssl;
 	}
 	
-	public void setUploadLimit(long limit){
-		uploadLimit = limit;
-	}
-	
 	public void setPath(String p){
 		path = p;
 	}
@@ -94,25 +87,22 @@ public class ServerNode implements Node{
 	public String path(){
 		return path;
 	}
+		
+	public void addConfig(String name, String value){
+		if(localCapacities == null){
+			localCapacities = new HashMap<String, String>();
+		}
+		localCapacities.put(name, value);
+	}
 	
+	public String getRemoteConfig(String name){
+		return remoteCapacities.get(name);
+	}
 	
-	/*public Map<String,String> getRemoteCapacities(RestRequest rest){
-		if(this.remoteCapacities != null) return this.remoteCapacities;
-		// Load XML Registry and get values
-		remoteCapacities = new HashMap<String, String>();
-		try {
-			Document doc = rest.getDocumentContent(AjxpAPI.getInstance().getXmlPluginsRegistryUri());
-			XPathFactory factory = XPathFactory.newInstance();
-			XPath xpath = factory.newXPath();
-			XPathExpression expr = xpath.compile(capacity_UPLOAD_LIMIT);
-			org.w3c.dom.Node result = (org.w3c.dom.Node)expr.evaluate(doc, XPathConstants.NODE);
-			remoteCapacities.put(capacity_UPLOAD_LIMIT, result.getFirstChild().getNodeValue().replace("\"", ""));
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
-		return this.remoteCapacities;
-	}*/
+	public String getLocalConfig(String name){
+		if(localCapacities == null) return null;
+		return localCapacities.get(name);
+	}
+	
 	
 }
