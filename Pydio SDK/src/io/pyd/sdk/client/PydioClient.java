@@ -11,6 +11,7 @@ import io.pyd.sdk.client.model.RepositoryNode;
 import io.pyd.sdk.client.transport.Transport;
 import io.pyd.sdk.client.transport.TransportFactory;
 import io.pyd.sdk.client.utils.Pydio;
+import io.pyd.sdk.client.utils.StateHolder;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,6 +23,12 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.http.util.EncodingUtils;
 import org.w3c.dom.Document;
@@ -335,4 +342,37 @@ public class PydioClient {
 	Message prepareChunkDownload( node, chunkCount)
 	Message downloadChunk(fileID,chunkIndex)
 	*/
+	
+	
+	/*
+	 *  SERVER CONFIGS METHODS
+	 */
+	
+	
+	/**
+	 * Load the remote config registry of the current server. 
+	 * @param key the name of the remote config
+	 * @return a String value of the config
+	 */
+	public String getRemoteConfigs(String key){
+		try {
+			return StateHolder.getInstance().getServer().getRemoteConfig(key);
+		}catch(NullPointerException e){
+			String action = Pydio.ACTION_LIST_PLUGINS;
+			Document doc = transport.getXmlContent(action , new HashMap<String, String>());
+			XPathFactory factory = XPathFactory.newInstance();
+			XPath xpath = factory.newXPath();
+			XPathExpression expr = null;
+			org.w3c.dom.Node result = null;			
+			try {
+				expr = xpath.compile(Pydio.SERVER_CAPACITY_UPLOAD);
+				result = (org.w3c.dom.Node)expr.evaluate(doc, XPathConstants.NODE);
+				StateHolder.getInstance().getServer().addConfig(Pydio.SERVER_CAPACITY_UPLOAD, result.getFirstChild().getNodeValue().replace("\"", ""));
+				return StateHolder.getInstance().getServer().getRemoteConfig(key);
+			} catch (XPathExpressionException e1) {
+				//publish error message
+			}	
+		}		
+		return null;
+	}
 }
