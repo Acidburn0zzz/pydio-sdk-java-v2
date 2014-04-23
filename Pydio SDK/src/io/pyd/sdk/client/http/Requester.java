@@ -1,6 +1,6 @@
 package io.pyd.sdk.client.http;
 
-import io.pyd.sdk.client.utils.ServerResolver;
+import io.pyd.sdk.client.utils.Pydio;
 import io.pyd.sdk.client.utils.StateHolder;
 
 import java.io.BufferedReader;
@@ -32,7 +32,6 @@ import org.apache.http.util.EncodingUtils;
  * @author pydio
  *
  */
-@SuppressWarnings("deprecation")
 public class Requester {
 		
 	private AjxpFileBody fileBody;
@@ -41,7 +40,7 @@ public class Requester {
 	private AjxpHttpClient httpClient;
 	private boolean trustSSL = false;
 	private CountingMultipartRequestEntity.ProgressListener progressListener;	
-	String authStep;
+	private String authStep;
 	
 	UsernamePasswordCredentials credentials = null;
 	//MAX_UPLOAD to be checked
@@ -54,26 +53,25 @@ public class Requester {
 	 */
 	public HttpResponse issueRequest(URI uri, Map<String, String> postParameters){
 		
-		httpClient = new AjxpHttpClient(trustSSL);		
+		httpClient = new AjxpHttpClient(trustSSL);	
 		if(credentials != null){
 			httpClient.refreshCredentials(credentials);
 		}
 		
-     	if(uri.toString().contains(ServerResolver.SERVER_URL_RESOLUTION)){
-     		//throw Message.create(1, 1, "resolution needed");
-     	}
+     	/*if(uri.toString().contains(ServerResolver.SERVER_URL_RESOLUTION)){
+     		//throw Message.create(1, 1, "resolution needed");     		
+     	}*/
 		
 		try{
-			HttpRequestBase request;
-	
+			HttpRequestBase request;	
 			if(postParameters != null || file != null){
 				request = new HttpPost();
 				
 				if(file != null){
 					if(fileBody == null){
 						if(fileName == null) fileName = file.getName();
-						fileBody = new AjxpFileBody(file, fileName);
-						long maxUpload = StateHolder.getInstance().getServer().getUploadLimit();
+						fileBody = new AjxpFileBody(file, fileName);						
+						long maxUpload = Long.parseLong(StateHolder.getInstance().getServer().getRemoteConfig(Pydio.SERVER_CAPACITY_UPLOAD));
 						if(maxUpload > 0 && maxUpload < file.length()){
 							fileBody.chunkIntoPieces((int)maxUpload);
 							if(progressListener != null){
@@ -166,6 +164,7 @@ public class Requester {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
 	 * This method is used to pass a file to upload and  must be called before issueRequest(). 
 	 * @param file Object File to be uploaded
