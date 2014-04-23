@@ -25,6 +25,7 @@ import java.io.OutputStream;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.util.EntityUtils;
 
 public class CountingMultipartRequestEntity implements HttpEntity {
     private final HttpEntity delegate;
@@ -74,7 +75,8 @@ public class CountingMultipartRequestEntity implements HttpEntity {
     }
 
 	public void consumeContent() throws IOException {
-		this.delegate.consumeContent();
+		//this.delegate.consumeContent();
+		EntityUtils.consume(delegate);
 		
 	}
 
