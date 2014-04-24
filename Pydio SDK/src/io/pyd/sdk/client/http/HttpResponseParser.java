@@ -1,5 +1,8 @@
 package io.pyd.sdk.client.http;
 
+import io.pyd.sdk.client.utils.Pydio;
+import io.pyd.sdk.client.utils.StateHolder;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -61,10 +64,10 @@ public class HttpResponseParser {
 		HttpEntity entity = response.getEntity();			
 		InputStream in;
 		StringBuilder sb = new StringBuilder();
-		
+		int bufsize = Integer.parseInt(StateHolder.getInstance().getLocalConfig(Pydio.LCONFIG_BUFFER_SIZE));
 		try {
 			in = entity.getContent();
-			byte[] buffer = new byte[1024];
+			byte[] buffer = new byte[bufsize];
 			
 			for(int read = 0; (read = in.read(buffer)) != -1;){
 				sb.append(new String(Arrays.copyOfRange(buffer, 0, read)));
