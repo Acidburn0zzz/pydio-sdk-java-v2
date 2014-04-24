@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import io.pyd.sdk.client.utils.DefaultEventBus;
 import io.pyd.sdk.client.utils.Pydio;
+import io.pyd.sdk.client.utils.StateHolder;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -70,7 +71,7 @@ public class Message{
 			for(int i = 0; i < removes.getLength(); i++){
 				pathes.add(removes.item(i).getAttributes().getNamedItem(Pydio.NODE_PROPERTY_FILENAME).getNodeValue());
 			}
-			DefaultEventBus.bus().publish(new TreeRemoveEvent(pathes));
+			StateHolder.getInstance().bus().publish(new TreeRemoveEvent(pathes));
 		}catch(Exception e){
 			
 		}
@@ -80,10 +81,9 @@ public class Message{
 			NodeList adds = doc.getElementsByTagName(Pydio.NODE_DIFF_ADD).item(0).getChildNodes();
 			nodes = new ArrayList<Node>();
 			for(int i = 0; i < adds.getLength(); i++){
-				nodes.add(NodeFactory.createNode(adds.item(i)));
-				
+				nodes.add(NodeFactory.createNode(adds.item(i)));				
 			}
-			DefaultEventBus.bus().publish(new TreeAddEvent(nodes));
+			StateHolder.getInstance().bus().publish(new TreeAddEvent(nodes));
 		}catch(Exception e){
 			
 		}
@@ -94,7 +94,7 @@ public class Message{
 			for(int i = 0; i < updates.getLength(); i++){			
 				nodes.add(NodeFactory.createNode(updates.item(i)));			
 			}
-			DefaultEventBus.bus().publish(new TreeUpdateEvent(nodes));
+			StateHolder.getInstance().bus().publish(new TreeUpdateEvent(nodes));
 		}catch(Exception e){
 			
 		}
