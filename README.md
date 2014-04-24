@@ -52,7 +52,7 @@ You can use your own credentials provider by implementing the CredentialsProvide
 ```java
 StateHolder.getInstance().setCredentialsProvider(new CredentialsProvider{
 		public UsernamePasswordCredentials requestForLoginPassword(){
-			// to your stuff here
+			// do your stuff here
 		}
 		
 		public X509Certificate requestForCertificate(){
