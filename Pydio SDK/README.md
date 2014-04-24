@@ -1,5 +1,5 @@
 This document describes the pydio java sdk implementation based on an UML specification in SDK_uml.
-The SDK is organised on layers ( HTTP layer, TRANSPORT Layer, PYDIO layer). Each layer provide service to the upper layer.
+The SDK is organised on layers ( HTTP layer, TRANSPORT Layer, PYDIO layer). Each layer provide services to the upper layer.
 Beside theses layers, there are the DATA MODEL and some useful functions in UTILS.
 
 				  
