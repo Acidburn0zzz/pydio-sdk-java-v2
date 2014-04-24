@@ -46,6 +46,10 @@ public class Message{
 		this.type = type;
 	}
 
+	
+	public String toString(){
+		return "result : " + type + ", message : "+message;
+	}
 	/**
 	 * create a message from the given XML Document and fire associated event
 	 * @param doc An instance of XML Document
@@ -56,36 +60,44 @@ public class Message{
 		org.w3c.dom.Node xml_message = doc.getElementsByTagName(Pydio.XML_MESSAGE).item(0);
 		
 		Message message = new Message();
-		message.setMessage(xml_message.getTextContent());
-		message.setType(xml_message.getAttributes().getNamedItem(Pydio.MESSAGE_PROPERTY_TYPE).getNodeValue());
-		
-		
-		NodeList removes = doc.getElementsByTagName(Pydio.NODE_DIFF_REMOVE).item(0).getChildNodes();
-		ArrayList<String> pathes = new ArrayList<String>();
-		for(int i = 0; i < removes.getLength(); i++){
-			pathes.add(removes.item(i).getAttributes().getNamedItem(Pydio.NODE_PROPERTY_FILENAME).getNodeValue());
-		}		
-		DefaultEventBus.bus().publish(new TreeRemoveEvent(pathes));
-		
-		
-		
-		NodeList adds = doc.getElementsByTagName(Pydio.NODE_DIFF_ADD).item(0).getChildNodes();
-		ArrayList<Node> nodes = new ArrayList<Node>();
-		for(int i = 0; i < adds.getLength(); i++){
-			nodes.add(NodeFactory.createNode(adds.item(i)));
+		if(xml_message != null){
+			message.setMessage(xml_message.getTextContent());
+			message.setType(xml_message.getAttributes().getNamedItem(Pydio.MESSAGE_PROPERTY_TYPE).getNodeValue());
+		}
+		try{
+			NodeList removes = doc.getElementsByTagName(Pydio.NODE_DIFF_REMOVE).item(0).getChildNodes();
+			ArrayList<String> pathes = new ArrayList<String>();
+			for(int i = 0; i < removes.getLength(); i++){
+				pathes.add(removes.item(i).getAttributes().getNamedItem(Pydio.NODE_PROPERTY_FILENAME).getNodeValue());
+			}
+			DefaultEventBus.bus().publish(new TreeRemoveEvent(pathes));
+		}catch(Exception e){
 			
 		}
-		DefaultEventBus.bus().publish(new TreeAddEvent(nodes));
 		
-		
-		
-		NodeList updates = doc.getElementsByTagName(Pydio.NODE_DIFF_UPDATE).item(0).getChildNodes();
-		nodes = new ArrayList<Node>();
-		for(int i = 0; i < updates.getLength(); i++){			
-			nodes.add(NodeFactory.createNode(updates.item(i)));			
+		ArrayList<Node> nodes = null;
+		try{
+			NodeList adds = doc.getElementsByTagName(Pydio.NODE_DIFF_ADD).item(0).getChildNodes();
+			nodes = new ArrayList<Node>();
+			for(int i = 0; i < adds.getLength(); i++){
+				nodes.add(NodeFactory.createNode(adds.item(i)));
+				
+			}
+			DefaultEventBus.bus().publish(new TreeAddEvent(nodes));
+		}catch(Exception e){
+			
 		}
-		DefaultEventBus.bus().publish(new TreeUpdateEvent(nodes));
 		
+		try{
+			NodeList updates = doc.getElementsByTagName(Pydio.NODE_DIFF_UPDATE).item(0).getChildNodes();
+			nodes = new ArrayList<Node>();
+			for(int i = 0; i < updates.getLength(); i++){			
+				nodes.add(NodeFactory.createNode(updates.item(i)));			
+			}
+			DefaultEventBus.bus().publish(new TreeUpdateEvent(nodes));
+		}catch(Exception e){
+			
+		}
 		
 		return message;
 	}
