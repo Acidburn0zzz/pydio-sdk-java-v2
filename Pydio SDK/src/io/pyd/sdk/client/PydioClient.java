@@ -1,6 +1,7 @@
 
 package io.pyd.sdk.client;
 
+import io.pyd.sdk.client.auth.CommandlineCredentialsProvider;
 import io.pyd.sdk.client.auth.CredentialsProvider;
 import io.pyd.sdk.client.http.CountingMultipartRequestEntity;
 import io.pyd.sdk.client.model.FileNode;
@@ -43,7 +44,14 @@ public class PydioClient {
 	
 	Transport transport;
 	
-
+	/**
+	 * create a pydio client with default settings
+	 */
+	public PydioClient(){
+		transport = TransportFactory.getInstance(Transport.MODE_SESSION, new CommandlineCredentialsProvider());
+	}
+	
+	
 	
 	/**
 	 * Create a pydio action by specifying the transport mode and a CredentialsProvider instance
