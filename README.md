@@ -60,3 +60,63 @@ StateHolder.getInstance().setCredentialsProvider(new CredentialsProvider{
 		}	
 });
 ```
+
+## Architecture of library
+The Pydio java SDK is organised on layers ( from bottom :  HTTP layer, TRANSPORT Layer, PYDIO layer). Each layer provide service to the upper layer.
+Beside theses layers, there are the DATA MODEL and some useful functions in UTILS.
+
+
+
+###The data model
+the data model describes a bunch of units that are used inside theses layers.
+The Node class is the top class of an hierarchy composed of ServerNode, RepositoryNode, FileNode and VirtualNode.
+* node types
+    * ServerNode 		: Object used to carry all information about the remote pydio server.
+    * Repository Node 	: The representation of a remote Repository.
+    * FileNode 			: the representation(carries all properties) of remote files.
+    * Virtual 			: Specific FileNode.	
+Another important class is the Message class that carry information on performed pydio actions.
+
+###The HTTP layer
+the HTTP layer provider http services to Transport layer via the Requester class.
+The method issueRequest() of the Requester class perform an http request using a given URI object and a Map Object containing Http parameters.
+
+###The Transport Layer
+The Transport Layer provides simple methods to retrieve/put content form/to the remote pydio server via Transport classes.
+This layer also provides 2 ways of communication via RestTranport and SessionTransport classes.
+* Transpoort types
+    * RestTranport		: To send rest request to remote server.
+    * SessionTransport	: To handle a session.
+	
+###Pydio Layer
+The Pydio layer provides simple file system actions via the pydioClient class.
+
+
+
+## How to contribute
+
+If you like, you can add new not implemented operations, for example described [here][3].
+Please <a href="http://pyd.io/contribute/cla">sign the Contributor License Agreement</a> before your PR can be merged.
+
+
+ [0]: https://github.com/AFNetworking/AFNetworking
+ [1]: https://github.com/jonreid/OCMockito
+ [2]: https://github.com/hamcrest/OCHamcrest
+ [3]: http://pyd.io/resources/serverapi/#!/access.fs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
