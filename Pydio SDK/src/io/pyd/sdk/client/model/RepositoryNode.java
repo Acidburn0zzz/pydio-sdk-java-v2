@@ -34,7 +34,7 @@ public class RepositoryNode implements Node{
 		return accessType;
 	}
 	
-	public String getLabel() {
+	public String label() {
 		return label;
 	}
 	

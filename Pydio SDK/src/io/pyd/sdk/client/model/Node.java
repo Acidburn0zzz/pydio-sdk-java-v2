@@ -19,6 +19,7 @@ public interface Node{
 	
 	public int type();
 	
+	public String label();
 	/**
 	 * 
 	 * @return 

@@ -18,9 +18,9 @@ public class ServerNode implements Node{
 	private String host;
 	private String path;
 	private Map<String, String> remoteCapacities;
-	private Map<String, String> localCapacities;
+	
 
-	public void initFromProperties(Properties spec) {		
+	public void initFromProperties(Properties spec) {
 	}
 	
 	public void initFromXml(org.w3c.dom.Node xml) {
@@ -41,11 +41,11 @@ public class ServerNode implements Node{
 		return SSLselfSigned;
 	}
 	
-	public String getHost(){
+	public String host(){
 		return host;
 	}
 	
-	public String getProtocol(){
+	public String protocol(){
 		return protocol;
 	}
 
@@ -80,28 +80,25 @@ public class ServerNode implements Node{
 		path = p;
 	}
 	
-	public String getUrl(){
+	public String url(){
 		return protocol+"://"+host+path+"/";
 	}
 	
 	public String path(){
 		return path;
 	}
-		
-	public void addConfig(String name, String value){
-		if(localCapacities == null){
-			localCapacities = new HashMap<String, String>();
-		}
-		localCapacities.put(name, value);
-	}
 	
 	public String getRemoteConfig(String name){
 		return remoteCapacities.get(name);
 	}
 	
-	public String getLocalConfig(String name){
-		if(localCapacities == null) return null;
-		return localCapacities.get(name);
+	public void addConfig(String key, String value){
+		if(remoteCapacities == null) remoteCapacities = new HashMap<String, String>();
+		remoteCapacities.put(key, value);
+	}
+
+	public String label() {
+		return null;
 	}
 	
 	

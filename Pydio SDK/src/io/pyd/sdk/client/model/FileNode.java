@@ -48,7 +48,7 @@ public class FileNode implements Node{
 	}
 	
 
-	public String name(){
+	public String label(){
 		return properties.getProperty(Pydio.NODE_PROPERTY_TEXT);
 	}
 	

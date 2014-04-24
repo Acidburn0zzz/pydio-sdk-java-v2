@@ -50,6 +50,11 @@ public class VirtualNode implements Node{
 		return null;
 	}
 
+	public String label() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 
 }
