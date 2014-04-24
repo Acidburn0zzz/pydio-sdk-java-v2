@@ -61,7 +61,7 @@ StateHolder.getInstance().setCredentialsProvider(new CredentialsProvider{
 });
 ```
 
-**You can find more examples in 'example' folder**
+**You can find more examples in 'examples' folder**
 
 ## Architecture of library
 The Pydio java SDK is organised on layers ( from bottom :  HTTP layer, TRANSPORT Layer, PYDIO layer) as showed in the SDK_uml image. Each layer provide service to the upper layer.
