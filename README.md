@@ -1,6 +1,6 @@
 # PYDIO JAVA SDK
 
-This is the iOS Pydio Server API wrapper which you can use in your application to communicate with Pydio servers in unified and quick way. This SDK encapsulates, in form of Objective-C messages, queries which you would have to send to server. It simplifies authorization logic and lets you operate on objects representing server data structures.
+This is the Pydio java SDK which you can use in your application to communicate with Pydio servers in unified and quick way. This SDK encapsulates queries which you would have to send to server. It simplifies authorization logic and lets you operate on objects representing server data structures.
 
 **If you would like to contribute to the pydio java SDK, you are very welcome** :)
 
@@ -19,7 +19,8 @@ To use the SDK, there are three basic classes in SDK you need to know
  - ServerNode  : holds information (host name, path, protocol) about the pydio server you target.
  - PydioClient : is the class that allow you to remotely perform file system operation on your pydio server.
  - StateHolder : holds parameters set by user of the library. StateHolder holds some defaults parameters that can be changed.
- 
+
+### How to simply get the repository list of a pydio server
 Here are steps that show how to get the repository list of a server. The first thing you hava to do is to create a configure your server :
 
 ```java
@@ -44,7 +45,8 @@ PydioClient pydio = new PydioClient();
 ArrayList<RepositoryNode> repositories = pydio.listRepository();
 ```
 
-Logging to server is done in lazy way. Authentication data is provided via a CredentialsProvider instance. The CommandLineCredentialsProvider is set by default in the StateHolder. So when performing your repository listing your login and password are asked in console. 
+### How authentication is made
+authentication to server is asked at the very needed moment and authentication data are provided via a CredentialsProvider instance. The CommandLineCredentialsProvider is set by default in the StateHolder. So when performing your repository listing your login and password are asked in console. 
 You can use your own credentials provider by implementing the CredentialsProvider interface this way :
 
 ```java
