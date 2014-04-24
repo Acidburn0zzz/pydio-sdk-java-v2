@@ -70,11 +70,10 @@ Beside theses layers, there are the DATA MODEL and some useful functions in UTIL
 ###The data model
 the data model describes a bunch of units that are used inside theses layers.
 The Node class is the top class of an hierarchy composed of ServerNode, RepositoryNode, FileNode and VirtualNode.
-* node types
-    * ServerNode 		: Object used to carry all information about the remote pydio server.
+    * ServerNode 	: Object used to carry all information about the remote pydio server.
     * Repository Node 	: The representation of a remote Repository.
-    * FileNode 			: the representation(carries all properties) of remote files.
-    * Virtual 			: Specific FileNode.	
+    * FileNode 		: the representation(carries all properties) of remote files.
+    * Virtual 		: Specific FileNode.	
 Another important class is the Message class that carry information on performed pydio actions.
 
 ###The HTTP layer
@@ -84,8 +83,7 @@ The method issueRequest() of the Requester class perform an http request using a
 ###The Transport Layer
 The Transport Layer provides simple methods to retrieve/put content form/to the remote pydio server via Transport classes.
 This layer also provides 2 ways of communication via RestTranport and SessionTransport classes.
-* Transpoort types
-    * RestTranport		: To send rest request to remote server.
+    * RestTranport	: To send rest request to remote server.
     * SessionTransport	: To handle a session.
 	
 ###Pydio Layer
@@ -103,20 +101,3 @@ Please <a href="http://pyd.io/contribute/cla">sign the Contributor License Agree
  [1]: https://github.com/jonreid/OCMockito
  [2]: https://github.com/hamcrest/OCHamcrest
  [3]: http://pyd.io/resources/serverapi/#!/access.fs
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
