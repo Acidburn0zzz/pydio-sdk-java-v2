@@ -117,7 +117,11 @@ public class Pydio {
 	public final static String NODE_DIFF_UPDATE 				= "update";
 	public final static String NODE_DIFF_REMOVE 				= "remove";
 	
-	public final static String SERVER_CAPACITY_UPLOAD			= "//property[@name='UPLOAD_MAX_SIZE']";
 	
 	
+	public final static String RCONFIG_UPLOAD_SIZE				= "//property[@name='UPLOAD_MAX_SIZE']";
+	
+	
+	public final static String LCONFIG_BUFFER_SIZE				= "buffer_size";	
+	public final static int LCONFIG_BUFFER_SIZE_DVALUE  		= 3000000;
 }
