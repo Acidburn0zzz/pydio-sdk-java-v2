@@ -34,7 +34,10 @@ public class HttpResponseParser {
 			if(entity instanceof XMLDocEntity){
 				return ((XMLDocEntity) entity).getDoc();
 			}
-			return db.parse(entity.getContent());
+			
+			InputStream in = entity.getContent();
+			
+			return db.parse(in);
 			
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
@@ -57,21 +60,20 @@ public class HttpResponseParser {
 		if(response == null) return null;		
 		HttpEntity entity = response.getEntity();			
 		InputStream in;
+		StringBuilder sb = new StringBuilder();
+		
 		try {
 			in = entity.getContent();
-			String content = "";
 			byte[] buffer = new byte[1024];
 			
 			for(int read = 0; (read = in.read(buffer)) != -1;){
-				content += new String(Arrays.copyOfRange(buffer, 0, read));
+				sb.append(new String(Arrays.copyOfRange(buffer, 0, read)));
 			}
-			return content;
+			return sb.toString();
 		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
