@@ -52,10 +52,7 @@ public class PydioClient {
 	 */
 	public PydioClient(int transportMode, CredentialsProvider p){
 		transport = TransportFactory.getInstance(transportMode, p);
-	}
-	
-	
-	
+	}	
 	
 	/**
 	 * @param params
@@ -143,8 +140,7 @@ public class PydioClient {
 	 * @param name the name on the remote server
 	 * @return a SUCCESS or ERROR Message
 	 */
-	Message write(Node node, File source, CountingMultipartRequestEntity.ProgressListener progressHandler , boolean autoRename, String name){
-		
+	Message write(Node node, File source, CountingMultipartRequestEntity.ProgressListener progressHandler , boolean autoRename, String name){		
 		String action = Pydio.ACTION_UPLOAD;
 		Map<String, String> params = new HashMap<String , String>();
 		params.put(Pydio.PARAM_NODE, node.path());	
@@ -156,7 +152,6 @@ public class PydioClient {
 			tmp_name = fname;
 			fname = EncodingUtils.getAsciiString(EncodingUtils.getBytes(source.getName(), "US-ASCII")).replace("?", "") + ".tmp_upload";
 		}
-				
 		try {
 			if(name != null){
 				params.put(Pydio.PARAM_APPENDTO_URLENCODED_PART, name);
@@ -165,18 +160,16 @@ public class PydioClient {
 			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-		}
-		
+		}		
 		if(autoRename){
 			params.put(Pydio.PARAM_AUTO_RENAME, "true");
-		}	
+		}
 	
-		transport.putContent(action, params, source, fname, progressHandler);
-		
+		Message m = Message.create(transport.putContent(action, params, source, fname, progressHandler));	
 		if(tmp_name != null){
 			rename(node, tmp_name);
 		}
-		return null;
+		return m;
 	}
 
 	
@@ -199,11 +192,11 @@ public class PydioClient {
 			e1.printStackTrace();
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		}
-		
+		}		
 		// if(stream == null) // TODO
-		int read = 0;
-		byte[] buffer = new byte[1024];		
+		int read = 0, bufsize = Integer.parseInt(StateHolder.getInstance().getLocalConfig(Pydio.LCONFIG_BUFFER_SIZE));
+		
+		byte[] buffer = new byte[bufsize];	
 		int i = 0;
 		try {
 			for(;;){
@@ -242,7 +235,7 @@ public class PydioClient {
 	 * @param nodes
 	 * @return
 	 */
-	Message remove(Node[] nodes){		
+	Message remove(Node[] nodes){	
 		String action = Pydio.ACTION_DELETE;
 		Map<String, String> params = new HashMap<String , String>();		
 		fillParams(params, nodes);
@@ -354,25 +347,19 @@ public class PydioClient {
 	 * @param key the name of the remote config
 	 * @return a String value of the config
 	 */
-	public String getRemoteConfigs(String key){
+	public void getRemoteConfigs(){
+		Document doc = transport.getXmlContent(Pydio.ACTION_LIST_PLUGINS , new HashMap<String, String>());
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		XPathExpression expr = null;
+		org.w3c.dom.Node result = null;			
 		try {
-			return StateHolder.getInstance().getServer().getRemoteConfig(key);
-		}catch(NullPointerException e){
-			String action = Pydio.ACTION_LIST_PLUGINS;
-			Document doc = transport.getXmlContent(action , new HashMap<String, String>());
-			XPathFactory factory = XPathFactory.newInstance();
-			XPath xpath = factory.newXPath();
-			XPathExpression expr = null;
-			org.w3c.dom.Node result = null;			
-			try {
-				expr = xpath.compile(Pydio.SERVER_CAPACITY_UPLOAD);
-				result = (org.w3c.dom.Node)expr.evaluate(doc, XPathConstants.NODE);
-				StateHolder.getInstance().getServer().addConfig(Pydio.SERVER_CAPACITY_UPLOAD, result.getFirstChild().getNodeValue().replace("\"", ""));
-				return StateHolder.getInstance().getServer().getRemoteConfig(key);
-			} catch (XPathExpressionException e1) {
-				//publish error message
-			}	
+			expr = xpath.compile(Pydio.RCONFIG_UPLOAD_SIZE);
+			result = (org.w3c.dom.Node)expr.evaluate(doc, XPathConstants.NODE);
+			StateHolder.getInstance().getServer().addConfig(Pydio.RCONFIG_UPLOAD_SIZE, result.getFirstChild().getNodeValue().replace("\"", ""));
+			//add all config here
+		} catch (XPathExpressionException e1) {
+			//publish error message
 		}		
-		return null;
 	}
 }
