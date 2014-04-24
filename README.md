@@ -46,7 +46,7 @@ ArrayList<RepositoryNode> repositories = pydio.listRepository();
 ```
 
 ### How authentication is performed
-authentication to server is asked at the very needed moment and authentication data are provided via a CredentialsProvider instance. The CommandLineCredentialsProvider is set by default in the StateHolder. So when performing your repository listing your login and password are asked in console. 
+Authentication to server is asked at the very needed moment and authentication data are provided via a CredentialsProvider instance. The CommandLineCredentialsProvider is set by default in the StateHolder. So when performing your repository listing your login and password are asked in console. 
 You can use your own credentials provider by implementing the CredentialsProvider interface this way :
 
 ```java
