@@ -63,14 +63,14 @@ StateHolder.getInstance().setCredentialsProvider(new CredentialsProvider{
 
 **You can find more examples in 'examples' folder**
 
-## Architecture of library
+## Architecture of Pydio java SDK
 The Pydio java SDK is organised on layers ( from bottom :  HTTP layer, TRANSPORT Layer, PYDIO layer) as showed in the SDK_uml image. Each layer provide service to the upper layer.
 Beside theses layers, there are the DATA MODEL and some useful functions in UTILS.
 
 
 
 ###The data model
-the data model describes a bunch of units that are used inside theses layers.
+The data model describes a bunch of units that are used inside theses layers.
 The Node class is the top class of an hierarchy composed of ServerNode, RepositoryNode, FileNode and VirtualNode.
 * node types :
     * ServerNode 	: Object used to carry all information about the remote pydio server.
@@ -80,7 +80,7 @@ The Node class is the top class of an hierarchy composed of ServerNode, Reposito
 Another important class is the Message class that carry information on performed pydio actions.
 
 ###The HTTP layer
-the HTTP layer provider http services to Transport layer via the Requester class.
+The HTTP layer provider http services to Transport layer via the Requester class.
 The method issueRequest() of the Requester class perform an http request using a given URI object and a Map Object containing Http parameters.
 
 ###The Transport Layer
