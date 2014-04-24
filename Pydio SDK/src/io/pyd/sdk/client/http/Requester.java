@@ -53,7 +53,7 @@ public class Requester {
 	 */
 	public HttpResponse issueRequest(URI uri, Map<String, String> postParameters){
 		
-		httpClient = new AjxpHttpClient(trustSSL);	
+		httpClient = new AjxpHttpClient(trustSSL);
 		if(credentials != null){
 			httpClient.refreshCredentials(credentials);
 		}
@@ -65,19 +65,19 @@ public class Requester {
 		try{
 			HttpRequestBase request;	
 			if(postParameters != null || file != null){
-				request = new HttpPost();
-				
+				request = new HttpPost();				
 				if(file != null){
 					if(fileBody == null){
 						if(fileName == null) fileName = file.getName();
 						fileBody = new AjxpFileBody(file, fileName);						
-						long maxUpload = Long.parseLong(StateHolder.getInstance().getServer().getRemoteConfig(Pydio.SERVER_CAPACITY_UPLOAD));
+						long maxUpload = Long.parseLong(StateHolder.getInstance().getServer().getRemoteConfig(Pydio.RCONFIG_UPLOAD_SIZE));
 						if(maxUpload > 0 && maxUpload < file.length()){
 							fileBody.chunkIntoPieces((int)maxUpload);
 							if(progressListener != null){
 								progressListener.partTransferred(fileBody.getCurrentIndex(), fileBody.getTotalChunks());
 							}
 						}
+						System.out.println("REMOTE CONFIG UPLOAD SIZE : "+maxUpload);
 					}else{
 						if(progressListener != null){
 							progressListener.partTransferred(fileBody.getCurrentIndex() , fileBody.getTotalChunks());
@@ -129,12 +129,11 @@ public class Requester {
 			HttpResponse response = httpClient.executeInContext(request);		
 			
 			if(fileBody != null && fileBody.isChunked() && !fileBody.allChunksUploaded()){
-				this.discardResponse(response);
+				this.discardResponse(response);				
 				this.issueRequest(uri, postParameters);
 			}
 			
-			return response;
-			
+			return response;			
 		}catch(IOException e){
 		}
 		return null;
