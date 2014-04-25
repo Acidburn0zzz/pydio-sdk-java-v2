@@ -1,14 +1,14 @@
-# PYDIO JAVA SDK
+# Pydio Java SDK
 
-This is the Pydio java SDK which you can use in your application to communicate with Pydio servers in unified and quick way. This SDK encapsulates queries which you would have to send to server. It simplifies authorization logic and lets you operate on objects representing server data structures.
+This is the Pydio Java SDK that you can use in your application to communicate with Pydio servers, in a unified and quick way. This SDK encapsulates queries which you would have to send to server. It simplifies authorization logic and lets you operate on objects representing server data structures.
 
 **If you would like to contribute to the pydio java SDK, you are very welcome** :)
 
-## Initializing project
-The project uses third party libraries that are already referenced in the pom.xml file. So once the project is cloned and imported you have nothing to do but make sure that Maven is enabled in your IDE.
+## Initializing the project
+The project is Maven-ready: it uses third party libraries that are already referenced in the ```pom.xml``` file. You need to make sure that Maven is enabled in your IDE. For Eclipse the plugin is m2eclipse.
 
-## How to add the Pydio java SDK to your project
-To add the Pydio java SDK to your project, you only need to make it referenced by your project. For example if you are using eclipse, follow theses steps:
+## How-to add the Pydio java SDK to your project
+To add the Pydio java SDK to your project, you only need to make it referenced by your project. For example if you are using Eclipse, follow theses steps:
 	- Right-click on your project --> Properties --> Project references --> select the Pydio java SDK --> OK
  
 
@@ -17,10 +17,10 @@ To add the Pydio java SDK to your project, you only need to make it referenced b
 To use the SDK, there are three basic classes in SDK you need to know
 
  - ServerNode  : holds information (host name, path, protocol) about the pydio server you target.
- - PydioClient : is the class that allow you to remotely perform file system operation on your pydio server.
+ - PydioClient : the class that allow you to remotely perform file system operation on your pydio server.
  - StateHolder : holds parameters set by user of the library. StateHolder holds some defaults parameters that can be changed.
 
-### How to simply get the repository list of a pydio server
+### Example: list the workspaces of a pydio server
 Here are steps that show how to get the repository list of a server. The first thing you have to do is to create and configure your server :
 
 ```java
@@ -46,7 +46,7 @@ ArrayList<RepositoryNode> repositories = pydio.listRepository();
 ```
 
 ### How authentication is performed
-Authentication to server is asked at the very needed moment and authentication data are provided via a CredentialsProvider instance. The CommandLineCredentialsProvider is set by default in the StateHolder. So when performing your repository listing your login and password are asked in console. 
+Authentication to server is performed "lazily": it is asked at the very needed moment and authentication data are provided via a CredentialsProvider instance. The CommandLineCredentialsProvider is set by default in the StateHolder. So when performing your repository listing your login and password are asked in console. 
 You can use your own credentials provider by implementing the CredentialsProvider interface this way :
 
 ```java
@@ -61,20 +61,21 @@ StateHolder.getInstance().setCredentialsProvider(new CredentialsProvider{
 });
 ```
 
-**You can find more examples in 'examples' folder**
+**Tip: You can find more examples in 'examples' folder**
 
 ## Architecture of Pydio java SDK
-The Pydio java SDK is organised on layers ( from bottom :  HTTP layer, TRANSPORT Layer, PYDIO layer) as shown in the SDK_uml image. Each layer provide services to the upper layer.
-Beside theses layers, there are the DATA MODEL and some useful functions in UTILS.
+The Pydio java SDK is organised in layers ( from bottom :  HTTP layer, TRANSPORT Layer, PYDIO layer) as shown in the SDK_uml image. Each layer provides services to the upper layer.
+Beside these layers, there are the DATA MODEL and some useful functions in UTILS.
 
 ###The data model
-The data model describes a bunch of units that are used inside theses layers.
-The Node class is the top class of an hierarchy composed of ServerNode, RepositoryNode, FileNode and VirtualNode.
+The data model describes a bunch of objects that are used inside theses layers.
+The Node class is the top class of a hierarchy composed of ServerNode, RepositoryNode, FileNode and VirtualNode.
 * node types :
     * ServerNode 	: Object used to carry all information about the remote pydio server.
-    * Repository Node 	: The representation of a remote Repository.
-    * FileNode 		: the representation(carries all properties) of remote files.
-    * Virtual 		: Specific FileNode.	
+    * RepositoryNode 	: The representation of a remote Workspace.
+    * FileNode 		: the representation (carries all properties) of a remote file (file or folder).
+    * Virtual 		: Specific FileNode, kind of symbolic link, can contain for example a bunch of search results 
+
 Another important class is the Message class that carry information on performed pydio actions.
 
 ###The HTTP layer
